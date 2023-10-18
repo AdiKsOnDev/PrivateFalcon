@@ -10,7 +10,6 @@ from langchain.document_loaders import (
     EverNoteLoader,
     PyMuPDFLoader,
     TextLoader,
-    UnstructuredEmailLoader,
     UnstructuredEPubLoader,
     UnstructuredHTMLLoader,
     UnstructuredMarkdownLoader,
@@ -33,3 +32,38 @@ CHROMA_SETTINGS = Settings(
         persist_directory=DB_DIRECTORY,
         anonymized_telemetry=False # Disable usage information collecting
 )
+
+# Map file extensions to document loaders
+LOADERS = {
+    ".csv": (CSVLoader, {}),
+    ".doc": (UnstructuredWordDocumentLoader, {}),
+    ".docx": (UnstructuredWordDocumentLoader, {}),
+    ".enex": (EverNoteLoader, {}),
+    ".epub": (UnstructuredEPubLoader, {}),
+    ".html": (UnstructuredHTMLLoader, {}),
+    ".md": (UnstructuredMarkdownLoader, {}),
+    ".odt": (UnstructuredODTLoader, {}),
+    ".pdf": (PyMuPDFLoader, {}),
+    ".ppt": (UnstructuredPowerPointLoader, {}),
+    ".pptx": (UnstructuredPowerPointLoader, {}),
+    ".txt": (TextLoader, {"encoding": "utf8"})
+}
+
+def load_document(file):
+    """ Loads a single document
+
+        Arguments: 
+            file (string) --> The path to a file
+    """
+    extension = f'.{file.split(".")[-1].lower()}'
+    
+    if extension not in LOADERS:
+        raise Exception(f"Files with the extension {extension} are not supported")
+    
+    loader_class, arguments = LOADERS[extension]
+    
+    loader = loader_class(file, **arguments)
+    return loader.load()
+
+if __name__ == "__main__":
+    load_document("hello.kfdsf.fdsa.wfeq.f.csv") # Test
