@@ -65,5 +65,22 @@ def load_document(file):
     loader = loader_class(file, **arguments)
     return loader.load()
 
-if __name__ == "__main__":
-    load_document("hello.kfdsf.fdsa.wfeq.f.csv") # Test
+def load_directory(dir):
+    """ Loads the documents from a certain directory
+        Uses the `load_document()` function
+
+        Arguments: 
+            dir (string) --> The path to a directory
+    """
+    files = []
+    for extension in LOADERS:
+        files.extend(
+            glob.glob(os.path.join(dir, f"**/*{extension.lower()}"), recursive=True)
+        )
+
+    with Pool(processes=os.cpu_count()) as pool:
+        results = []
+        for i, docs in enumerate(pool.imap_unordered(load_document)):
+            results.extend(docs)
+    
+    return results
