@@ -1,1 +1,4 @@
-langchain
+chromadb==0.4.14
+dotenv
+langchain==0.0.316
+tqdm==4.66.1
