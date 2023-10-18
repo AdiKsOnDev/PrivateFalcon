@@ -5,6 +5,9 @@ from multiprocessing import Pool
 from typing import List
 from chromadb.config import Settings
 from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain.vectorstores import Chroma
+from langchain.embeddings import HuggingFaceEmbeddings
+from langchain.docstore.document import Document
 
 from langchain.document_loaders import (
     CSVLoader,
@@ -26,6 +29,7 @@ if not load_dotenv():
 DB_DIRECTORY = os.environ.get('DB_DIRECTORY')
 CHUNK_SIZE = os.environ.get('CHUNK_SIZE')
 CHUNK_OVERLAP = os.environ.get('CHUNK_OVERLAP')
+EMBEDDINGS_MODEL = os.environ.get('EMBEDDINGS_MODEL')
 
 if DB_DIRECTORY is None:
     raise Exception("Set the DB_DIRECTORY in the '.env' file!")
@@ -97,17 +101,30 @@ def split_documents(loaded_files):
         Arguments:
             loaded_files (List[str]) --> Files that are already loaded and should be ignored
     """
-    print("--> Loading the Documents <--")
-    
+    print("---> Loading the Documents <---")
     documents = load_directory(DB_DIRECTORY, loaded_files)
 
     if not documents:
         raise Exception("No new documents to ingest!")
     
     splitter = RecursiveCharacterTextSplitter(chunk_size=CHUNK_SIZE, chunk_overlap=CHUNK_OVERLAP)
-
     split_documents = splitter.split_documents(documents)
 
     print(f"Split the documents into {len(documents)} chunks (Max. {CHUNK_SIZE} tokens each)")
 
     return split_documents
+
+def make_chromadb_batches(client, documents):
+    """ Split the documents into smaller batches
+
+        Arguments:
+            client (API) --> chromaDB client
+            documents (List[str])
+    """
+    max_batch = client.max_batch_size
+
+    for batch in range(0, len(documents), max_batch):
+        yield documents[batch:batch + max_batch]
+
+if __name__ == "__main":
+    embeddings = HuggingFaceEmbeddings(model_name=EMBEDDINGS_MODEL)
