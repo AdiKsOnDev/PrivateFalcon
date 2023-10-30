@@ -38,8 +38,8 @@ if DB_DIRECTORY is None:
 
 # Chroma settings
 CHROMA_SETTINGS = Settings(
-        persist_directory=DB_DIRECTORY,
-        anonymized_telemetry=False # Disable usage information collecting
+    persist_directory=DB_DIRECTORY,
+    anonymized_telemetry=False # Disable usage information collecting
 )
 
 # Map file extensions to document loaders
