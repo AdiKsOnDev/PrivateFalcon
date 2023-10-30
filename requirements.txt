@@ -1,1 +1,6 @@
-langchain
+accelerate==0.23.0
+chromadb==0.4.14
+dotenv
+langchain==0.0.316
+sentence-transformers==2.2.2
+pymupdf==1.23.5
