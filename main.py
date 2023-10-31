@@ -31,23 +31,24 @@ def main():
     embeddings = HuggingFaceEmbeddings(model_name=EMBEDDINGS_MODEL)
     chroma_client = chromadb.PersistentClient(settings=CHROMA_SETTINGS, path=DB_DIRECTORY)
 
-    model_id = "tiiuae/falcon-7b"
+    model_id = "mistralai/Mistral-7B-v0.1"
+    # model_id = "tiiuae/falcon-7b"
 
     data = Chroma(persist_directory=DB_DIRECTORY, embedding_function=embeddings, client_settings=CHROMA_SETTINGS, client=chroma_client)
     retriever = data.as_retriever(search_kwargs={"k": SOURCE_CHUNKS})
-    tokenizer = AutoTokenizer.from_pretrained(model_id)
-    model = AutoModelForCausalLM.from_pretrained(model_id)
+    # tokenizer = AutoTokenizer.from_pretrained(model_id)
+    # model = AutoModelForCausalLM.from_pretrained(model_id)
     print("Retriever")
 
     llm = HuggingFacePipeline.from_model_id(
-		model_id=model,
-		task="text2text-generation"
+		model_id=model_id,
+		task="text-generation"
 	)
 
-    pipe = pipeline(
-            "text-generation", model=model, tokenizer=tokenizer, max_new_tokens=10
-        )
-    llm = HuggingFacePipeline(pipeline=pipe)
+    # pipe = pipeline(
+    #         "text-generation", model=model, tokenizer=tokenizer, max_new_tokens=10
+    #     )
+    # llm = HuggingFacePipeline(pipeline=pipe)
 
     # hugging_pipeline = transformers.pipeline(
     #     "text-generation",
