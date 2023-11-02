@@ -30,8 +30,8 @@ if not load_dotenv():
 
 DB_DIRECTORY = os.environ.get('DB_DIRECTORY')
 EMBEDDINGS_MODEL = os.environ.get('EMBEDDINGS_MODEL')
-CHUNK_SIZE = 500
-CHUNK_OVERLAP = 50
+CHUNK_SIZE = 1000
+CHUNK_OVERLAP = 100
 
 if DB_DIRECTORY is None:
     raise Exception("Set the DB_DIRECTORY in the '.env' file!")
