@@ -4,12 +4,10 @@ import chromadb
 from chromadb.api.segment import API
 from dotenv import load_dotenv
 from multiprocessing import Pool
-from typing import List
 from chromadb.config import Settings
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.vectorstores import Chroma
 from langchain.embeddings import HuggingFaceEmbeddings
-from langchain.docstore.document import Document
 
 from langchain.document_loaders import (
     CSVLoader,
@@ -30,8 +28,8 @@ if not load_dotenv():
 
 DB_DIRECTORY = os.environ.get('DB_DIRECTORY')
 EMBEDDINGS_MODEL = os.environ.get('EMBEDDINGS_MODEL')
-CHUNK_SIZE = 500
-CHUNK_OVERLAP = 50
+CHUNK_SIZE = 1000
+CHUNK_OVERLAP = 100
 
 if DB_DIRECTORY is None:
     raise Exception("Set the DB_DIRECTORY in the '.env' file!")
