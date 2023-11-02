@@ -2,7 +2,6 @@ import os
 import chromadb
 import time
 import torch
-import transformers
 from langchain.chains import RetrievalQA
 from langchain.document_loaders import TextLoader
 from langchain.llms import HuggingFacePipeline
@@ -31,24 +30,28 @@ def main():
     embeddings = HuggingFaceEmbeddings(model_name=EMBEDDINGS_MODEL)
     chroma_client = chromadb.PersistentClient(settings=CHROMA_SETTINGS, path=DB_DIRECTORY)
 
-    model_id = "mistralai/Mistral-7B-v0.1"
-    # model_id = "tiiuae/falcon-7b"
+    # model_id = "mistralai/Mistral-7B-v0.1"
+    model_id = "tiiuae/falcon-7b"
 
     data = Chroma(persist_directory=DB_DIRECTORY, embedding_function=embeddings, client_settings=CHROMA_SETTINGS, client=chroma_client)
     retriever = data.as_retriever(search_kwargs={"k": SOURCE_CHUNKS})
-    # tokenizer = AutoTokenizer.from_pretrained(model_id)
+    tokenizer = AutoTokenizer.from_pretrained(model_id)
     # model = AutoModelForCausalLM.from_pretrained(model_id)
     print("Retriever")
 
-    llm = HuggingFacePipeline.from_model_id(
-		model_id=model_id,
-		task="text-generation"
-	)
+    # llm = HuggingFacePipeline.from_model_id(
+	# 	model_id=model_id,
+	# 	task="text-generation"
+	# )
 
-    # pipe = pipeline(
-    #         "text-generation", model=model, tokenizer=tokenizer, max_new_tokens=10
-    #     )
-    # llm = HuggingFacePipeline(pipeline=pipe)
+    pipe = pipeline(
+        model=model_id,
+        tokenizer=tokenizer,
+        torch_dtype=torch.bfloat16,
+        device_map="auto",
+        max_new_tokens=50
+        )
+    llm = HuggingFacePipeline(pipeline=pipe)
 
     # hugging_pipeline = transformers.pipeline(
     #     "text-generation",
@@ -74,7 +77,8 @@ def main():
         # Get the answer from the chain
         start = time.time()
         res = retrieval(query)
-        answer, docs = res['result'], res['source_documents']
+        answer= res['result']
+        
         end = time.time()
 
         # Print the result
@@ -83,10 +87,10 @@ def main():
         print(f"\n> Answer (took {round(end - start, 2)} s.):")
         print(answer)
 
-        # Print the relevant sources used for the answer
-        for document in docs:
-            print("\n> " + document.metadata["source"] + ":")
-            print(document.page_content)
+        # # Print the relevant sources used for the answer
+        # for document in docs:
+        #     print("\n> " + document.metadata["source"] + ":")
+        #     print(document.page_content)
 
 if __name__ == "__main__":
     main()
