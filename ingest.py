@@ -4,12 +4,10 @@ import chromadb
 from chromadb.api.segment import API
 from dotenv import load_dotenv
 from multiprocessing import Pool
-from typing import List
 from chromadb.config import Settings
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.vectorstores import Chroma
 from langchain.embeddings import HuggingFaceEmbeddings
-from langchain.docstore.document import Document
 
 from langchain.document_loaders import (
     CSVLoader,
