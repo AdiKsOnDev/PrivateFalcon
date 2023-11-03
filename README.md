@@ -48,7 +48,20 @@ PrivateFalcon/
 ├── data/               # Directory with the source documents
 ├── requirements.txt    # .txt file with all the dependencies
 ```
-##
+
+# 📂 Allowed file extensions
+- .csv
+- .doc
+- .docx
+- .enex
+- .epub
+- .html
+- .md
+- .odt
+- .pdf
+- .ppt
+- .pptx
+- .txt
 
 # 🤝 Contributing
 If you want to contribute to PrivateFalcon, feel free to submit a pull request or make an Issue
