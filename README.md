@@ -9,7 +9,7 @@ Before you begin, make sure you have the following prerequisites in place:
 - Documents Placed in the `data/` directory
 - .env file containing:
 ```bash
-DB_DIRECTORY=<directory-name>
+DB_DIRECTORY=vectors
 EMBEDDINGS_MODEL=all-MiniLM-L6-v2 
 ```
  You can put any other embeddings model into that variable.
