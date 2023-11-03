@@ -10,7 +10,9 @@ Before you begin, make sure you have the following prerequisites in place:
 - .env file containing:
 ```bash
 DB_DIRECTORY=vectors
-EMBEDDINGS_MODEL=all-MiniLM-L6-v2 
+EMBEDDINGS_MODEL=all-MiniLM-L6-v2
+SOURCE_CHUNKS=<Number of chunks used to create an answer, if lost - put 4>
+MAX_NEW_TOKENS=200
 ```
  You can put any other embeddings model into that variable.
 
@@ -50,18 +52,18 @@ PrivateFalcon/
 ```
 
 # 📂 Allowed file extensions
-- .csv
-- .doc
-- .docx
-- .enex
-- .epub
-- .html
-- .md
-- .odt
-- .pdf
-- .ppt
-- .pptx
-- .txt
+- `.csv`
+- `.doc`
+- `.docx`
+- `.enex`
+- `.epub`
+- `.html`
+- `.md`
+- `.odt`
+- `.pdf`
+- `.ppt`
+- `.pptx`
+- `.txt`
 
 # 🤝 Contributing
 If you want to contribute to PrivateFalcon, feel free to submit a pull request or make an Issue
