@@ -13,6 +13,8 @@ DB_DIRECTORY=vectors
 EMBEDDINGS_MODEL=all-MiniLM-L6-v2
 SOURCE_CHUNKS=<Number of chunks used to create an answer, if lost - put 4>
 MAX_NEW_TOKENS=200
+CHUNK_SIZE=<The size of each chunk, if lost - put 1000>
+CHUNK_OVERLAP=<The overlapping of different chunks, if lost - put 100>
 ```
  You can put any other embeddings model into that variable.
 
