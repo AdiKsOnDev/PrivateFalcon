@@ -18,6 +18,7 @@ if not load_dotenv():
 DB_DIRECTORY = os.environ.get('DB_DIRECTORY')
 EMBEDDINGS_MODEL = os.environ.get('EMBEDDINGS_MODEL')
 SOURCE_CHUNKS = int(os.environ.get('SOURCE_CHUNKS', 4))
+MAX_NEW_TOKENS = int(os.environ.get('MAX_NEW_TOKENS', 200))
 
 # Chroma settings
 CHROMA_SETTINGS = Settings(
@@ -42,7 +43,7 @@ def main():
         tokenizer=tokenizer,
         torch_dtype=torch.bfloat16,
         device_map="auto",
-        max_new_tokens=200
+        max_new_tokens=MAX_NEW_TOKENS
         )
     llm = HuggingFacePipeline(pipeline=pipe)
 
